@@ -1,0 +1,15 @@
+@url = http://localhost:3003/api/blogs
+###
+
+GET {{url}}
+
+###
+POST http://localhost:3003/api/blogs/
+content-type: application/json
+
+{
+    "title": "How to code",
+    "author": "Ayii",
+    "url": "https://how-to-code",
+    "likes": 3
+}

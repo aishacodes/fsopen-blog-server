@@ -8,8 +8,6 @@ const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
 const config = require("./utils/config");
 
-logger.info("connecting to", config.mongoUrl);
-
 mongoose
   .connect(config.mongoUrl, {
     useNewUrlParser: true,

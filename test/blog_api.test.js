@@ -40,6 +40,7 @@ test("contacts are 2", async () => {
   let res = await api.get("/api/blogs");
   expect(res.body).toHaveLength(2);
 });
+
 afterAll(() => {
   mongoose.connection.close();
 });

@@ -29,16 +29,22 @@ beforeEach(async () => {
   await blogObject.save();
 });
 
-test("contacts are returned in json", async () => {
+test("blogs are returned as JSON", async () => {
   await api
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
 });
 
-test("contacts are 2", async () => {
+test("blogs are 2", async () => {
   let res = await api.get("/api/blogs");
   expect(res.body).toHaveLength(2);
+});
+
+test("returned blogs should contain id", async () => {
+  const response = await api.get("/api/blogs");
+
+  expect(response.body[1].id).toBeDefined();
 });
 
 afterAll(() => {

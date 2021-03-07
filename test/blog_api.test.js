@@ -47,6 +47,26 @@ test("returned blogs should contain id", async () => {
   expect(response.body[1].id).toBeDefined();
 });
 
+test("a valid blog can be added", async () => {
+  const newBlog = {
+    title: "React Routers",
+    author: "Sam John",
+    url: "https://reactrouters.com/",
+    likes: 7,
+  };
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const response = await api.get("/api/blogs");
+  const blogTitle = response.body.map((blog) => blog.title);
+
+  expect(response.body).toHaveLength(initialBlogs.length + 1);
+  expect(blogTitle).toContain(newBlog.title);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

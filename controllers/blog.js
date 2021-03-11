@@ -11,7 +11,10 @@ blogRouter.get("/", async (request, response, next) => {
 });
 
 blogRouter.post("/", async (request, response) => {
-  const blog = new Blog(request.body);
+  let blog = request.body;
+  if (!blog.title || !blog.url) return response.status(400).end();
+  blog = new Blog(blog);
+
   try {
     const result = await blog.save();
     response.status(201).json(result);

@@ -29,7 +29,7 @@ beforeEach(async () => {
   await blogObject.save();
 });
 
-test("blogs are returned as JSON", async () => {
+test("contacts are returned in json", async () => {
   await api
     .get("/api/blogs")
     .expect(200)
@@ -65,6 +65,27 @@ test("a valid blog can be added", async () => {
 
   expect(response.body).toHaveLength(initialBlogs.length + 1);
   expect(blogTitle).toContain(newBlog.title);
+});
+
+test("blogs with missing title and url not added ", async () => {
+  const noUrlBlog = {
+    author: "Edgar Frank",
+    title: "arigato masarimasem",
+    likes: 2,
+  };
+
+  const noTitleBlog = {
+    url: "https://reactrouters.com/",
+    author: "Precious james",
+    likes: 7,
+  };
+
+  await api.post("/api/blogs").send(noUrlBlog).expect(400);
+
+  await api.post("/api/blogs").send(noTitleBlog).expect(400);
+
+  const response = await api.get("/api/blogs");
+  expect(response.body).toHaveLength(initialBlogs.length);
 });
 
 afterAll(() => {

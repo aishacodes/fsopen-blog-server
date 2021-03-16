@@ -13,3 +13,6 @@ content-type: application/json
     "url": "https://how-to-code",
     "likes": 3
 }
+###
+
+DELETE http://localhost:3003/api/blogs/603a80082565080c5ecfb765

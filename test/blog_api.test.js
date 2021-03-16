@@ -67,25 +67,41 @@ test("a valid blog can be added", async () => {
   expect(blogTitle).toContain(newBlog.title);
 });
 
-test("blogs with missing title and url not added ", async () => {
-  const noUrlBlog = {
-    author: "Edgar Frank",
-    title: "arigato masarimasem",
-    likes: 2,
-  };
+// test("blogs with missing title and url not added ", async () => {
+//   const noUrlBlog = {
+//     author: "Edgar Frank",
+//     title: "arigato masarimasem",
+//     likes: 2,
+//   };
 
-  const noTitleBlog = {
-    url: "https://reactrouters.com/",
-    author: "Precious james",
-    likes: 7,
-  };
+//   const noTitleBlog = {
+//     url: "https://reactrouters.com/",
+//     author: "Precious james",
+//     likes: 7,
+//   };
 
-  await api.post("/api/blogs").send(noUrlBlog).expect(400);
+//   await api.post("/api/blogs").send(noUrlBlog).expect(400);
 
-  await api.post("/api/blogs").send(noTitleBlog).expect(400);
+//   await api.post("/api/blogs").send(noTitleBlog).expect(400);
 
-  const response = await api.get("/api/blogs");
-  expect(response.body).toHaveLength(initialBlogs.length);
+//   const response = await api.get("/api/blogs");
+//   expect(response.body).toHaveLength(initialBlogs.length);
+// });
+
+test("delete a single blog post", async () => {
+  const res = await api.get("/api/blogs");
+  const blogAtStart = res.body;
+
+  const blogToDelete = blogAtStart[0];
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+  const blogAtEnd = res.body;
+
+  expect(blogAtEnd).toHaveLength(initialBlogs.length - 1);
+
+  const contents = blogAtEnd.map((r) => r.url);
+
+  expect(contents).not.toContain(blogToDelete.url);
 });
 
 afterAll(() => {

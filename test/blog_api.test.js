@@ -105,6 +105,25 @@ test("delete a single blog post", async () => {
   expect(contents).not.toContain(blogToDelete.url);
 });
 
+test("Update likes", async () => {
+  const res = await api.get("/api/blogs");
+  const blogAtStart = res.body;
+
+  const blogToUpdate = blogAtStart[1];
+  const update = { likes: 10 };
+
+  await api.put(`/api/blogs/${blogToUpdate.id}`).send(update).expect(200);
+
+  const response = await api.get("/api/blogs");
+  const blogAtEnd = response.body;
+
+  expect(blogAtEnd).toHaveLength(initialBlogs.length);
+
+  const likes = blogAtEnd.map((r) => r.likes);
+
+  expect(likes).toContain(update.likes);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

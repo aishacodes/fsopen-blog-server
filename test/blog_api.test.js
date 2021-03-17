@@ -94,8 +94,9 @@ test("delete a single blog post", async () => {
 
   const blogToDelete = blogAtStart[0];
   await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+  const response = await api.get("/api/blogs");
 
-  const blogAtEnd = res.body;
+  const blogAtEnd = response.body;
 
   expect(blogAtEnd).toHaveLength(initialBlogs.length - 1);
 

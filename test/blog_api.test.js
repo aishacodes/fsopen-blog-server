@@ -6,27 +6,11 @@ const app = require("./../app");
 const api = supertest(app);
 
 const Blog = require("./../models/blog");
-const initialBlogs = [
-  {
-    title: "How to code",
-    author: "Ayii",
-    url: "https://how-to-code",
-    likes: 3,
-  },
-  {
-    title: "How to Eat",
-    author: "Ayiishh",
-    url: "https://how-to-eat",
-    likes: 3,
-  },
-];
+const { initialBlogs, blogsInDB } = require("./../utils/test_helper");
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(initialBlogs[1]);
-  await blogObject.save();
+  await Blog.insertMany(initialBlogs);
 });
 
 test("contacts are returned in json", async () => {
@@ -36,9 +20,9 @@ test("contacts are returned in json", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
-test("blogs are 2", async () => {
+test("All blogs are returned", async () => {
   let res = await api.get("/api/blogs");
-  expect(res.body).toHaveLength(2);
+  expect(res.body).toHaveLength(initialBlogs.length);
 });
 
 test("returned blogs should contain id", async () => {
@@ -90,13 +74,13 @@ test("a valid blog can be added", async () => {
 
 test("delete a single blog post", async () => {
   const res = await api.get("/api/blogs");
-  const blogAtStart = res.body;
+  const blogAtStart = await blogsInDB();
 
   const blogToDelete = blogAtStart[0];
   await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
   const response = await api.get("/api/blogs");
 
-  const blogAtEnd = response.body;
+  const blogAtEnd = await blogsInDB();
 
   expect(blogAtEnd).toHaveLength(initialBlogs.length - 1);
 
@@ -106,16 +90,14 @@ test("delete a single blog post", async () => {
 });
 
 test("Update likes", async () => {
-  const res = await api.get("/api/blogs");
-  const blogAtStart = res.body;
+  const blogAtStart = await blogsInDB();
 
   const blogToUpdate = blogAtStart[1];
   const update = { likes: 10 };
 
   await api.put(`/api/blogs/${blogToUpdate.id}`).send(update).expect(200);
 
-  const response = await api.get("/api/blogs");
-  const blogAtEnd = response.body;
+  const blogAtEnd = await blogsInDB();
 
   expect(blogAtEnd).toHaveLength(initialBlogs.length);
 

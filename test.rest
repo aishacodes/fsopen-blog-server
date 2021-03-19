@@ -24,3 +24,17 @@ content-type: application/json
 
 ###
 DELETE http://localhost:3003/api/blogs/603a80082565080c5ecfb765
+
+###
+GET http://localhost:3003/api/users/
+
+
+###
+POST http://localhost:3003/api/users/
+content-type: application/json
+
+{
+    "username": "Aishat",
+    "password": "Ayii",
+    "name":"Adeshewa Tolulope"
+}

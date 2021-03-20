@@ -14,9 +14,12 @@ userRouter.get("/", async (req, res, next) => {
 
 userRouter.post("/", async (req, res, next) => {
   const body = req.body;
+  let passwordHash = body.password;
+  if (passwordHash.length < 3)
+    return res.status(404).json({ error: "invalid password " });
 
   const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(body.password, saltRounds);
+  passwordHash = await bcrypt.hash(body.password, saltRounds);
 
   const newUser = {
     username: body.username,
@@ -27,7 +30,7 @@ userRouter.post("/", async (req, res, next) => {
   try {
     const savedUser = await new User(newUser).save();
 
-    res.status(201).json(savedUser);
+    res.status(200).json(savedUser);
   } catch (error) {
     next(error);
   }

@@ -8,10 +8,11 @@ POST http://localhost:3003/api/blogs/
 content-type: application/json
 
 {
-    "title": "How to code",
+    "title": "Hyyyyyyyyyy",
     "author": "Ayii",
     "url": "https://how-to-code",
-    "likes": 3
+    "likes": 3,
+    "userid":"6057bee79572422a274d52d0"
 }
 
 ###
@@ -34,7 +35,7 @@ POST http://localhost:3003/api/users/
 content-type: application/json
 
 {
-    "username": "Aishatuut",
+    "username": "Oreoluwa",
     "password": "remi",
-    "name":"Adeshewa Tolulope"
+    "name":"Ajoke Ade"
 }

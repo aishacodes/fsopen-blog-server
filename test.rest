@@ -48,3 +48,13 @@ content-type: application/json
     "username": "Titilope",
     "password": "remi"
 }
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRpdGlsb3BlIiwiaWQiOiI2MDVlMDgxNDNmY2Q3MjI2OGQ1OWVjNzkiLCJpYXQiOjE2MTY4ODQ5OTZ9.95h9mlFHvhxRzH_F3TC9ElTPLqPQIHgB-dBoaesO02I
+{
+    "title": "Hyyyyyyyyyy",
+    "author": "Ayii",
+    "url": "https://how-to-code",
+    "likes": 3
+}

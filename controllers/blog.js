@@ -3,6 +3,8 @@ const Blog = require("./../models/blog");
 const User = require("./../models/user");
 const { getToken } = require("./../utils/config");
 const jwt = require("jsonwebtoken");
+const { request } = require("../app");
+const { findById } = require("./../models/blog");
 
 blogRouter.get("/", async (request, response, next) => {
   try {
@@ -19,9 +21,9 @@ blogRouter.get("/", async (request, response, next) => {
 blogRouter.post("/", async (request, response, next) => {
   let body = request.body;
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
-  if (!request.token || !decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid" });
-  }
+  if (!request.token || !decodedToken.id)
+    return response.status(404).json({ error: "invalid token " });
+
   const user = await User.findById(decodedToken.id);
 
   if (!body.title || !body.url) return response.status(400).end();
@@ -36,7 +38,7 @@ blogRouter.post("/", async (request, response, next) => {
 
   try {
     const result = await blog.save();
-    console.log(result);
+    // console.log(result);
     user.blogs = user.blogs.concat(result._id);
     await user.save();
 
@@ -48,9 +50,16 @@ blogRouter.post("/", async (request, response, next) => {
 
 blogRouter.delete("/:id", async (req, res, next) => {
   const id = req.params.id;
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
+  if (!req.token || !decodedToken.id)
+    return res.status(401).json({ errorr: "token missing or invalid" });
   try {
-    await Blog.findByIdAndRemove(id);
-    res.status(204).end();
+    const blogToDelete = await Blog.findById(id);
+    if (decodedToken.id.toString() !== blogToDelete.user.toString())
+      return res.status(404).send({ error: "permission denied" });
+
+    await blogToDelete.remove();
+    res.status(200).end();
   } catch (error) {
     next(error);
   }

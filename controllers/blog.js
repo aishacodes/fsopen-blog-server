@@ -27,7 +27,7 @@ blogRouter.post("/", async (request, response, next) => {
   const user = await User.findById(decodedToken.id);
 
   if (!body.title || !body.url) return response.status(400).end();
-
+  if (!body.likes) body.likes = 0;
   const blog = new Blog({
     title: body.title,
     author: body.author,
@@ -51,8 +51,10 @@ blogRouter.post("/", async (request, response, next) => {
 blogRouter.delete("/:id", async (req, res, next) => {
   const id = req.params.id;
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
+
   if (!req.token || !decodedToken.id)
     return res.status(401).json({ errorr: "token missing or invalid" });
+
   try {
     const blogToDelete = await Blog.findById(id);
     if (decodedToken.id.toString() !== blogToDelete.user.toString())

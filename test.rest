@@ -24,7 +24,7 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/606394e9312de62ee5631a4c
+DELETE http://localhost:3003/api/blogs/60663d497e71cc1d71ba2025
 
 ###
 GET http://localhost:3003/api/users/
@@ -51,11 +51,10 @@ content-type: application/json
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRpdGlsb3BlIiwiaWQiOiI2MDYzOTRiMzMxMmRlNjJlZTU2MzFhNGIiLCJpYXQiOjE2MTcxMzg4ODQsImV4cCI6MTYxNzE0MjQ4NH0.t_GaI6AyhKBViYT1FFyjQadSk41bmCJ9Ba6-h9VdUTo
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRpdGlsb3BlIiwiaWQiOiI2MDYzOTRiMzMxMmRlNjJlZTU2MzFhNGIiLCJpYXQiOjE2MTczMTMyNTQsImV4cCI6MTYxNzMxNjg1NH0.yjOH2DpIi37mJXO_5dtEQALK5OX31f7eITjImCwtjEE
 
 {
     "title": "Hyyyyyyyyyy",
     "author": "Ayii",
-    "url": "https://how-to-code",
-    "likes": 10
+    "url": "https://how-to-code"
 }
